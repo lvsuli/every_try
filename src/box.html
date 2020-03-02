@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>盒子模型</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    div {
+      width: 200px;
+      height: 200px;
+      border: green solid 10px;
+      background-color: honeydew;
+      word-wrap: break-word;
+      margin: 50px;
+    }
+
+    #div2,
+    #div3 {
+      border-style: dotted;
+      float: left;
+    }
+
+    #div3 {
+      padding: 10px;
+    }
+  </style>
+  <script>
+    var x = document.getElementById("div2");
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(postion => {
+          x.innerHTML = "Latitude: " + position.coords.latitude +
+            "<br />Longitude: " + position.coords.longitude;
+        });
+      } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+    // getLocation();
+  </script>
+</head>
+
+<body>
+  <div id="div1"></div>
+  <div id="div2">111111111111111111111111111111111111111111111111111111111111</div>
+  <div id="div3">width为内容宽度，背景色会包含内容、内边距padding、border边框，外边距margin会在垂直方向重叠合并，水平方向不合并?</div>
+</body>
+
+</html>

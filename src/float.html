@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>浮动</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #div1 {
+      background-color: red;
+      width: 200px;
+      height: 200px;
+    }
+
+    #div2 {
+      background-color: wheat;
+      float: left;
+    }
+
+    #div21 {
+      float: left;
+    }
+
+    #div3 {
+      background-color: yellow;
+      float: left;
+      width: 200px;
+      height: 200px;
+    }
+
+    #div4 {
+      background-color: green;
+      width: 300px;
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="div1"></div>
+  <div id="div2">
+    <div id="div21">
+      浮动元素会脱离文档流，后续的元素会补充其位置。注意：浮动元素层级提升半级，会覆盖后续元素
+    </div>
+  </div>
+  <div id="div3"></div>
+  <div id="div4"></div>
+</body>
+
+</html>

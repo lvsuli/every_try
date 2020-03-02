@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <tle>相对定位</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      div {
+        width: 200px;
+        height: 2000px;
+      }
+
+      #div1 {
+        background-color: red;
+      }
+
+      #div2 {
+        background-color: wheat;
+        width: 200px;
+        height: 200px;
+        position: fixed;
+        bottom: 150px;
+        right: 50px;
+      }
+
+      #div3 {
+        background-color: yellow;
+        width: 20px;
+        height: 80px;
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+      }
+
+      #div4 {
+        background-color: violet;
+      }
+    </style>
+    <script>
+      function backToTop() {
+        document.documentElement.nodeName
+        console.log(document.documentElement.scrollTop,
+          document.documentElement.nodeName,
+          document.documentElement.nodeType);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }
+    </script>
+</head>
+
+<body>
+  <div id="div1"></div>
+  <div id="div2">
+    固定定位其实也是一种绝对定位，会脱离文档流，不为元素预留空间，只是相对于浏览器窗口而不是其父元素,“回到顶部”功能就是此原理
+  </div>
+  <div id="div3" onclick="backToTop()">回到顶部</div>
+  <div id="div4"></div>
+</body>
+
+</html>

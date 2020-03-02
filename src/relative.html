@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>相对定位</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    div {
+      width: 200px;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    #div1 {
+      background-color: red;
+    }
+
+    #div2 {
+      background-color: green;
+      position: relative;
+      left: 10px;
+      top: -50px;
+    }
+
+    #div3 {
+      background-color: yellow;
+      position: relative;
+      z-index: 2;
+      left: 10px;
+      top: 50px;
+    }
+
+    #div4 {
+      background-color: gainsboro;
+      position: relative;
+      z-index: 8;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="div1">正常文档流等价于postion：static</div>
+  <div id="div2">
+    相对定位postion:relative会相对于其在正常文档流当中的原来位置进行偏移，注意：相对定位的元素可能会覆盖其他元素
+  </div>
+  <div id="div3"> </div>
+  <div id="div4">
+    相对定位后相邻的元素会照正常文档流的位置摆放，即相对定位的元素会保留其在文档流中的空间。使用z-index可以改变层叠顺序，属性值大者在上层，注意：z-index仅对定位元素有效（position:relative||absolute||fixed）;
+  </div>
+</body>
+
+</html>

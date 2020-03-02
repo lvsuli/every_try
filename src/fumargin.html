@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>负外边距</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    div {
+      width: 200px;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    #div1 {
+      background-color: red;
+    }
+
+    #div2 {
+      background-color: green;
+      /* position: relative;
+      left: 10px;
+      top: -50px; */
+      margin: -50px 10px;
+    }
+
+    #div4 {
+      background-color: gainsboro;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="div1">正常文档流等价于postion：static</div>
+  <div id="div2">
+    负margin也可以使元素偏移原来的位置
+  </div>
+  <div id="div4">
+    但紧挨其后元素会流入这部分空间
+  </div>
+</body>
+
+</html>

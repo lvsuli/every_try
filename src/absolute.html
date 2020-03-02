@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>绝对定位</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    div {
+      width: 200px;
+      height: 200px;
+    }
+
+    #div1 {
+      background-color: red;
+    }
+
+    #div2 {
+      background-color: wheat;
+      position: absolute;
+      top: 50px;
+      left: 50px;
+    }
+
+    #div2>* {
+      width: 100px;
+      height: 100px;
+    }
+
+    #div21 {
+      background-color: cyan;
+      position: relative;
+      top: 10px;
+      left: 10px;
+    }
+
+    #div22 {
+      background-color: coral;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    #div3 {
+      background-color: yellow;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="div1"></div>
+  <div id="div2">
+    <div id="div21"></div>
+    <div id="div22"></div>
+    绝对定位的元素会脱离文档流，相对于距离其最近的已定位的（即非static）(即relative、absolute、fixed)的定位的祖先元素进行定位，后续的元素会补充绝对定位的元素，好像绝对定位的元素不存在。注意：绝对定位的元素会覆盖其他元素
+  </div>
+  <div id="div3">
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>浮动</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 1%;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+    }
+
+    body {
+      background-color: yellowgreen;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    div {
+      border: black 1px solid;
+    }
+
+    .wrapper {
+      background-color: rgb(58, 145, 245);
+      width: 100%;
+      height: 700px;
+      /*水平居中*/
+      margin: auto;
+      /*垂直居中*/
+      /* position: absolute;
+      top: 50%;
+      margin-top: 50px;
+      transform: translateY(-50%); */
+    }
+
+    .left_container {
+      background-color: red;
+      width: 29%;
+      height: 100%;
+      margin-right: 1%;
+      float: left;
+    }
+
+    .left_container>* {
+      width: 100%;
+      height: 24.25%;
+    }
+
+    .right_container {
+      background-color: orange;
+      width: 70%;
+      height: 100%;
+      float: left;
+    }
+
+    .right_container.content>* {
+      width: 100%;
+      height: 48.8%;
+    }
+
+    .top_container {
+      background-color: yellow;
+      width: 100%;
+      height: 29%;
+      margin-bottom: 1%;
+    }
+
+    .bottom_container {
+      background-color: green;
+      width: 100%;
+      height: 70%;
+    }
+
+
+    .left_container>.gap,
+    .right_container>.gap {
+      width: 100%;
+      height: 1%;
+      border: none;
+    }
+
+    /* .gap {
+      width: 100%;
+      height: 1%;
+      border: none;
+    } */
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="left_container">
+      <div>1</div>
+      <div class="gap"></div>
+      <div>2</div>
+      <div class="gap"></div>
+      <div>3</div>
+      <div class="gap"></div>
+      <div>4</div>
+    </div>
+    <div class="right_container">
+      <div class="top_container">
+        <p>5</p>
+      </div>
+      <div class="bottom_container">
+        <div class="left_container">6</div>
+        <div class="right_container content">
+          <div>7</div>
+          <div class="gap"></div>
+          <div>8</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
