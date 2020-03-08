@@ -12,25 +12,26 @@
   输入的值为：<span id="out"></span>
 
   <script>
-    var int = document.getElementById('in');
-    var out = document.getElementById('out');
+    var int = document.getElementById("in");
+    var out = document.getElementById("out");
     var obj = {};
 
-    Object.defineProperty(obj, 'msg', {
+    Object.defineProperty(obj, "msg", {
       enumerable: true,
       configurable: true,
-      get() {
-        console.log(this, '属性被获取');
+      get () {
+        console.log(this, "属性被获取");
+        return int.value;
       },
-      set(newVal) {
-        console.log(this, '属性被重置');
+      set (newVal) {
+        console.log(this, "属性被重置");
         out.innerHTML = newVal;
       }
-    })
+    });
 
-    int.addEventListener('input', function (e) {
+    int.addEventListener("input", function (e) {
       obj.msg = e.target.value;
-    })
+    });
   </script>
 </body>
 

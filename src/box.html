@@ -31,21 +31,6 @@
       padding: 10px;
     }
   </style>
-  <script>
-    var x = document.getElementById("div2");
-
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(postion => {
-          x.innerHTML = "Latitude: " + position.coords.latitude +
-            "<br />Longitude: " + position.coords.longitude;
-        });
-      } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-      }
-    }
-    // getLocation();
-  </script>
 </head>
 
 <body>

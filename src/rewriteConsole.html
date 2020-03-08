@@ -6,42 +6,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script>
-    //1
+    // 1
     console.log = (function (oriLogFunc) {
       return function (str) {
         oriLogFunc("hello:" + str);
-      }
+      };
     })(console.log);
     console.log("dami");
 
-    //2
+    // 2
     var log = console.log;
     console.log = function (text) {
       log("info" + text);
-    }
+    };
     console.log("dami");
 
-    //3
+    // 3
     (function (i) {
-      console.log_ = console.log; //保存旧地址
+      console.log_ = console.log; // 保存旧地址
       // var i = 0; //在闭包中可以避免全局污染
-      console.log = function (...args) { //指向新地址
-        console.log_(++i, ':', ...args); //使用旧地址
-      }
+      console.log = function (...args) { // 指向新地址
+        console.log_(++i, ":", ...args); // 使用旧地址
+      };
     })(0);
-    i = 9; //并不能影响闭包中的同名变量
-    console.log('a', 1, 2); // 输入a
-    console.log('a', 1, 2); // 输入a
-    console.log('a', 1, 2); // 输入a
+    // i = 9; 并不能影响闭包中的同名变量
+    console.log("a", 1, 2); // 输入a
+    console.log("a", 1, 2); // 输入a
+    console.log("a", 1, 2); // 输入a
 
-
-    //4
-    const log = console.log;
+    // 4
+    var log1 = console.log;
     console.log = (...args) => {
       args = args.map(arg => `输入: ${arg}`);
-      log(...args);
-    }
-    console.log('a', 1, 2); // 输入a
+      log1(...args);
+    };
+    console.log("a", 1, 2); // 输入a
   </script>
 </head>
 

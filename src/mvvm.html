@@ -10,14 +10,14 @@
      * 把一个对象的每一项都转化成可观测对象
      * @param { Object } obj 对象
      */
-    function observable(obj) {
-      if (!obj || typeof obj !== 'object') {
+    function observable (obj) {
+      if (!obj || typeof obj !== "object") {
         return;
       }
-      let keys = Object.keys(obj);
+      const keys = Object.keys(obj);
       keys.forEach((key) => {
-        defineReactive(obj, key, obj[key])
-      })
+        defineReactive(obj, key, obj[key]);
+      });
       return obj;
     }
     /**
@@ -26,37 +26,35 @@
      * @param { String } key 对象的key
      * @param { Any } val 对象的某个key的值
      */
-    function defineReactive(obj, key, val) {
+    function defineReactive (obj, key, val) {
       Object.defineProperty(obj, key, {
-        get() {
+        get () {
           console.log(`${key}属性被读取了`);
           return val;
         },
-        set(newVal) {
+        set (newVal) {
           console.log(`${key}属性被修改了`);
           val = newVal;
         }
-      })
+      });
     }
-
-
 
     // 测试函数传参  函数内部是否可以修改实参值？
-    //结论：可以修改引用类型实参，不可以修改基本类型实参
-    var a = 1,
-      b = {
-        a: 2
-      };
+    // 结论：可以修改引用类型实参，不可以修改基本类型实参
+    var a = 1;
+    var b = {
+      a: 2
+    };
 
-    function change(p1, p2) {
+    function change (p1, p2) {
       p1 = 3;
       p2 = 4;
-      console.log('%c 🍩 p1: ', 'font-size:20px;background-color: #2EAFB0;color:#fff;', p1);
-      console.log('%c 🥚 p2: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', p2);
+      console.log("%c 🍩 p1: ", "font-size:20px;background-color: #2EAFB0;color:#fff;", p1);
+      console.log("%c 🥚 p2: ", "font-size:20px;background-color: #93C0A4;color:#fff;", p2);
     }
     change(a, b.a);
-    console.log('%c 🍪 a: ', 'font-size:20px;background-color: #ED9EC7;color:#fff;', a);
-    console.log('%c 🦀 b: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', b);
+    console.log("%c 🍪 a: ", "font-size:20px;background-color: #ED9EC7;color:#fff;", a);
+    console.log("%c 🦀 b: ", "font-size:20px;background-color: #6EC1C2;color:#fff;", b);
   </script>
 </head>
 
