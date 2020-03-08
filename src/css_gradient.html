@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    div.box {
+      margin: 5px 20px;
+      height: 50px;
+      border: black 2px solid;
+    }
+
+    #div1 {
+      background-image: linear-gradient(black, white);
+      background-image: linear-gradient(180deg, black, white);
+    }
+
+    #div2 {
+      background-image: linear-gradient(-90deg, black 30%, white 60%);
+      background-size: 20px 20px;
+    }
+
+    #div3 {
+      background-image: linear-gradient(90deg, black 30%, white 30%);
+    }
+
+    #div33 {
+      background-image: repeating-linear-gradient(30deg, black 0 2%, white 2% 4%);
+    }
+
+    #div4 {
+      background-image: linear-gradient(90deg, black 30%, blue, white 80%);
+    }
+
+    #div5 {
+      background: linear-gradient(to left,
+          lime 20%, red 30%, red 45%, cyan 55%, cyan 70%, yellow 80%);
+      background: linear-gradient(to left,
+          lime 20%, red 30% 45%, cyan 55% 70%, yellow 80%);
+    }
+
+    #div6 {
+      background: linear-gradient(to left,
+          lime 25%, red 25%, red 50%, cyan 50%, cyan 75%, yellow 75%);
+      background: linear-gradient(to left,
+          lime 25%, red 25% 50%, cyan 50% 75%, yellow 75%);
+    }
+
+    .container {
+      overflow: hidden;
+      border: black 2px solid;
+    }
+
+    .container div {
+      width: 20%;
+      height: 140px;
+      float: left;
+    }
+
+    #div7 {
+      background: linear-gradient(to right, transparent, mistyrose),
+        url("https://mdn.mozillademos.org/files/15525/critters.png");
+    }
+
+    #div8 {
+      background-image: radial-gradient(red, blue);
+    }
+
+    #div9 {
+      background: radial-gradient(red, yellow 30%, blue 50%);
+    }
+
+    #div10 {
+      background: repeating-radial-gradient(at 0% 50%, red, yellow 8%, blue 15%);
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" id="div1">1</div>
+  <div class="box" id="div2">2</div>
+  <div class="box" id="div3">3</div>
+  <div class="box" id="div33">33</div>
+  <div class="box" id="div4">4</div>
+  <div class="box" id="div5">5</div>
+  <div class="box" id="div6">6</div>
+  <div class="container">
+    <div id="div7">7</div>
+    <div id="div8">8</div>
+    <div id="div9">9</div>
+    <div id="div10">10</div>
+    <div id="div11">11</div>
+  </div>
+</body>
+
+</html>
