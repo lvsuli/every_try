@@ -8,20 +8,20 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   <title>Document</title>
   <script>
-    function check() {
-      const source = new EventSource('/api/eventSource');
-      source.addEventListener('open', function (es, e) {
-        console.log('连接已建立');
+    function check () {
+      const source = new EventSource("/api/eventSource");
+      source.addEventListener("open", function (es, e) {
+        console.log("连接已建立");
       });
-      source.addEventListener('error', function (es, e) {
-        console.log('连接发生错误');
+      source.addEventListener("error", function (es, e) {
+        console.log("连接发生错误");
       });
-      source.addEventListener('first', function (event) {
-        console.count('first');
+      source.addEventListener("first", function (event) {
+        console.count("first");
         console.table(JSON.parse(event.data));
       });
-      source.addEventListener('continue', function (event) {
-        console.count('continue');
+      source.addEventListener("continue", function (event) {
+        console.count("continue");
         var p = document.createElement("p");
         document.body.append(event.data, p);
       });
@@ -29,11 +29,11 @@
     }
     var source = null;
 
-    function start() {
+    function start () {
       source = check();
     }
 
-    function finish() {
+    function finish () {
       source.close();
     }
   </script>

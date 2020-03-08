@@ -1,7 +1,6 @@
-//!fasfafa
-//:fasfafaf
-//todo:fafafafaf
-
+//! fasfafa
+// :fasfafaf
+// todo:fafafafaf
 
 // Number.prototype.formatNum = function () {
 //   var arr = [...this.toString()];
@@ -19,9 +18,6 @@
 // }
 // money = 347843632;
 // money.formatNum();
-
-
-
 
 // var a1 = [{
 //     1: 1,
@@ -41,13 +37,12 @@
 // console.table(a3);
 // console.table(a4);
 
-
 // 当初我的脑袋是吞粪了吗... 为什么要用__proto__
 Number.prototype.formatNum = function () {
   const str = this.toString();
-  const reg = /(?=(\B)(\d{3})+$)/g
-  return str.replace(reg, ',')
-}
+  const reg = /(?=(\B)(\d{3})+$)/g;
+  return str.replace(reg, ",");
+};
 
 var num = 1234567;
 console.log(num.formatNum());

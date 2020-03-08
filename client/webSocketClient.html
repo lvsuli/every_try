@@ -8,14 +8,14 @@
   <script>
     // client test:
 
-    let ws = new WebSocket('ws://localhost:6666');
+    const ws = new WebSocket("ws://localhost:6666");
 
-    ws.addEventListener('open', function () {
-      console.log(`[CLIENT] open()`);
-      ws.send('Hello, server!');
+    ws.addEventListener("open", function () {
+      console.log("[CLIENT] open()");
+      ws.send("Hello, server!");
     });
     let count = 0;
-    ws.addEventListener('message', function (mes) {
+    ws.addEventListener("message", function (mes) {
       var p = document.createElement("p");
       document.body.append(`[client received:]${mes.data}`, p);
       ws.send(`thank you!${++count}`);
