@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            /* background: black; */
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+    <script>
+        (function () {
+            var canvas = document.getElementsByTagName("canvas")[0];
+            canvas.width = window.innerWidth - 10;
+            canvas.height = window.innerHeight - 10;
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = "purple";
+            ctx.font = "200px monospace";
+            var size = ctx.measureText("Hello World!");
+            ctx.fillText("Hello World!", (canvas.width - size.width) / 2, (canvas.height) / 2);
+            var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            // 遍历canvas每个像素，找到文字的像素位置
+            var particles = [];
+            for (let x = 0; x < canvas.width; x++) {
+                for (let y = 0; y < canvas.height; y++) {
+                    const index = (y * canvas.width + x) * 4 + 3;
+                    if (imageData.data[index] > 0) {
+                        particles.push(new Particle(x, y));
+                    }
+                }
+            }
+            function Particle (x, y) {
+                this.x0 = x;
+                this.y0 = y;
+                this.x = x;
+                this.y = y;
+                this.vx = Math.random() * 4 - 1;
+                this.vy = 3 + Math.random() * 8;
+                this.back = false;
+            }
+            Particle.prototype.draw = function () {
+                ctx.fillRect(this.x, this.y, 1, 1);
+            };
+            Particle.prototype.fall = function () {
+                // 移动前边界监测
+                if (this.x + this.vx <= 0 || this.x + this.vx >= canvas.width) this.vx *= -1;
+                if (this.y + this.vy >= canvas.height) this.y = canvas.height;
+                // 移动
+                this.x += this.vx;
+                this.y += this.vy;
+                // 移动后边界监测
+                if (this.x <= 0 || this.x >= canvas.width) this.vx *= -1;
+                if (this.y >= canvas.height) this.y = canvas.height;
+                // 如果是返回，到终点请停止运动
+                if (this.back && this.x0 === this.x && this.y0 === this.y) {
+                    this.vx = this.vy = 0;
+                }
+            };
+            function clcikHandler () {
+                flush();
+                document.body.removeEventListener("click", clcikHandler);
+                document.body.addEventListener("click", function () {
+                    particles.forEach(particle => {
+                        particle.vx *= -1;
+                        particle.vy *= -1;
+                        this.back = !this.back;
+                    });
+                });
+            }
+            function flush () {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(particle => {
+                    particle.fall();
+                    particle.draw();
+                });
+                requestAnimationFrame(flush);
+            }
+            document.body.addEventListener("click", clcikHandler);
+        })();
+    </script>
+</body>
+
+</html>

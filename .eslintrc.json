@@ -36,7 +36,7 @@
             2,
             "double"
         ],      
-        "indent": [2, "tab"] ,
+        "indent": [2, 4] ,
         "no-tabs":0,
         "prefer-promise-reject-errors": 1,
         "no-extend-native": 1,
