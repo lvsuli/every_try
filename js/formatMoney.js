@@ -39,9 +39,9 @@
 
 // 当初我的脑袋是吞粪了吗... 为什么要用__proto__
 Number.prototype.formatNum = function () {
-  const str = this.toString();
-  const reg = /(?=(\B)(\d{3})+$)/g;
-  return str.replace(reg, ",");
+	const str = this.toString();
+	const reg = /(?=(\B)(\d{3})+$)/g;
+	return str.replace(reg, ",");
 };
 
 var num = 1234567;

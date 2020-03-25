@@ -35,7 +35,9 @@
         "quotes": [
             2,
             "double"
-        ],
+        ],      
+        "indent": [2, "tab"] ,
+        "no-tabs":0,
         "prefer-promise-reject-errors": 1,
         "no-extend-native": 1,
         "no-proto": 1,
@@ -43,6 +45,7 @@
         "eqeqeq": 1,
         "camelcase": 1,
         "brace-style": 1,
-        "no-mixed-operators": 1
+        "no-mixed-operators": 1,
+        "no-new":1  
     }
 }

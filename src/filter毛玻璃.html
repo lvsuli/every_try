@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: url("../imgs/sky.jpg") no-repeat 0 0 / cover;
+  }
+
+  main {
+    /*水平垂直居中 */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    /* 自身其他样式 */
+    width: 600px;
+    height: 280px;
+    padding: 30px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
+    z-index: -1;
+    /* 文字样式 */
+    text-indent: 2em;
+    font-weight: bold;
+    line-height: 2;
+    /* white-space: pre-line; */
+  }
+
+  main::after {
+    content: '';
+    /* fixed很关键，将背景与body背景重叠 */
+    background: url("../imgs/sky.jpg") no-repeat 0 0 / cover fixed;
+    position: absolute;
+    /* 如下是何用意？ */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    filter: blur(7px);
+    z-index: -1;
+  }
+</style>
+
+<body>
+  <main>
+    <blockquote>
+      <p>
+        "boyx少年贪玩，青年迷恋爱情，壮年汲汲于成名成家，暮年自安于自欺欺人。人寿几何，顽铁能炼成的精金，能有多少？但不同程度的锻炼，必有不同程度的成绩；不同程度的纵欲放肆，必积下不同程度的顽劣。"
+      </p>
+      <br>
+      <p>
+        "上苍不会让所有幸福集中到某个人身上，得到爱情未必拥有金钱；拥有金钱未必得到快乐；得到快乐未必拥有健康；拥有健康未必一切都会如愿以偿。保持知足常乐的心态才是淬炼心智、净化心灵的最佳途径。一切快乐的享受都属于精神，这种快乐把忍受变为享受，是精神对于物质的胜利，这便是人生哲学。"
+      </p>
+      <footer>——
+        <cite>杨绛</cite>
+      </footer>
+    </blockquote>
+  </main>
+</body>
+
+</html>
