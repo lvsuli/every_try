@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             border: 0;
-            overflow: auto;
+            overflow: hidden;
             background: black;
         }
     </style>
@@ -24,7 +24,7 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             var ctx = canvas.getContext("2d");
-            ctx.font = `${canvas.width / 8}px monospace`;
+            ctx.font = `bold italic ${canvas.width / 8}px monospace`;
             var size1 = ctx.measureText("Hello ");
             var size2 = ctx.measureText("World!");
             ctx.fillStyle = "purple";
@@ -51,8 +51,8 @@
                 this.x = x;
                 this.y = y;
                 // 随机移动速度
-                this.vx = Math.random() * 4 - 2;
-                this.vy = Math.random() * 4 - 6;
+                this.vx = Math.random() * 6 - 3;
+                this.vy = Math.random() * 6 - 20;
                 // 运动是否已结束
                 this.finished = true;
             }
@@ -60,7 +60,21 @@
             Particle.back = true;
             Particle.prototype.draw = function () {
                 ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, 1, 1);
+        
+                // 画圆
+                // ctx.beginPath();
+                // ctx.arc(this.x, this.y, 1, 0, 2 * Math.PI);
+                // ctx.closePath();
+                // ctx.fill();
+
+                // 一倍像素
+                if (this.finished) {
+                    ctx.fillRect(this.x, this.y, 1, 1);
+                }
+                // 四倍像素
+                else {
+                    ctx.fillRect(this.x, this.y, 2, 2);
+                }
             };
             Particle.prototype.drift = function () {
                 if (!this.finished) {
