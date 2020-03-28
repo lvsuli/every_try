@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            overflow: hidden;
+            background: black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+    <script>
+        (function () {
+            var canvas = document.getElementsByTagName("canvas")[0];
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            var ctx = canvas.getContext("2d");
+            ctx.font = `bold italic ${canvas.width / 8}px monospace`;
+            var size1 = ctx.measureText("Hello ");
+            var size2 = ctx.measureText("World!");
+            ctx.fillStyle = "purple";
+            ctx.fillText("Hello ", (canvas.width - size1.width - size2.width) / 2, canvas.height / 2);
+            ctx.fillStyle = "yellow";
+            ctx.fillText("World!", (canvas.width - size1.width - size2.width) / 2 + size2.width, canvas.height / 2);
+            var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            // 遍历canvas每个像素，找到文字的像素位置
+            var particles = [];
+            for (let x = 0; x < canvas.width; x++) {
+                for (let y = 0; y < canvas.height; y++) {
+                    const index = (y * canvas.width + x) * 4 + 3;
+                    if (imageData.data[index] > 0) {
+                        particles.push(new Particle(x, y, `rgba(${imageData.data[index - 3]},${imageData.data[index - 2]},${imageData.data[index - 1]},${imageData.data[index]})`));
+                    }
+                }
+            }
+            const threeBezier = (t, p1, p2, cp1, cp2) => {
+                const [startX, startY] = p1;
+                const [endX, endY] = p2;
+                const [cpX1, cpY1] = cp1;
+                const [cpX2, cpY2] = cp2;
+                const x = startX * Math.pow(1 - t, 3) +
+                    3 * cpX1 * t * Math.pow(1 - t, 2) +
+                    3 * cpX2 * Math.pow(t, 2) * (1 - t) +
+                    endX * Math.pow(t, 3);
+                const y = startY * Math.pow(1 - t, 3) +
+                    3 * cpY1 * Math.pow(1 - t, 2) * t +
+                    3 * cpY2 * (1 - t) * Math.pow(t, 2) +
+                    endY * Math.pow(t, 3);
+                return [x, y];
+            };
+            function Particle (x, y, color) {
+                this.color = color;
+                // 文字坐标
+                this.x0 = x;
+                this.y0 = y;
+                // 当前坐标
+                this.x = x;
+                this.y = y;
+                // 随机终点坐标
+                this.xn = Math.random() * canvas.width;
+                this.yn = Math.random() * canvas.height;
+                // 运动是否已结束
+                this.finished = true;
+            }
+            // 文字是否是聚合路径
+            Particle.back = true;
+            // 文字动画是否完成，用来取消刷新
+            Particle.finished = true;
+            Particle.prototype.draw = function () {
+                ctx.fillStyle = this.color;
+                // 一倍像素
+                if (this.finished) {
+                    ctx.fillRect(this.x, this.y, 1, 1);
+                }
+                // 四倍像素
+                else {
+                    ctx.fillRect(this.x, this.y, 2, 2);
+                }
+            };
+            Particle.prototype.drift = function () {
+                if (!this.finished) {
+                    if (Particle.back) {
+                        [this.x, this.y] = threeBezier(0.45, [this.x, this.y], [this.x0, this.y0], [this.x, this.y], [this.x, this.y]);
+                        if (this.x === this.x0 && this.y === this.y0) { this.finished = true; }
+                    } else {
+                        [this.x, this.y] = threeBezier(0.25, [this.x, this.y], [this.xn, this.yn], [this.x, this.y], [this.x, this.y]);
+                        if (this.x === this.xn && this.y === this.yn) { this.finished = true; }
+                    }
+                }
+                this.draw();
+            };
+            function flush () {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(particle => {
+                    particle.drift();
+                    Particle.finished = Particle.finished && particle.finished;
+                });
+                // 减少性能消耗
+                if (Particle.finished)cancelAnimationFrame(flush);
+                else { requestAnimationFrame(flush); }
+            }
+            function clickHandler () {
+                Particle.finished = false;
+                Particle.back = !Particle.back;
+                particles.forEach(particle => {
+                    particle.finished = false;
+                });
+                flush();
+            }
+            canvas.addEventListener("click", clickHandler);
+            canvas.addEventListener("touch", clickHandler);
+        })();
+    </script>
+</body>
+
+</html>
