@@ -10,23 +10,47 @@
             margin: 0;
             padding: 0;
             border: 0;
-            overflow: hidden;
-            background: black;
+            overflow: auto;
         }
+
+        canvas {
+            background: black;
+            /* 方法一 */
+            /* position: absolute;
+            z-index: -1; */
+        }
+
+        div {
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            /* 居中 */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* 无效？？？？？？？？？？ */
+            /* display: flex;
+            align-items: center;
+            justify-content: center; */
+        }
+                
     </style>
 </head>
 
 <body>
     <canvas></canvas>
+    <div>我是写在canvas上的文字,需要设置canvas绝对定位和z-index负值,
+        或者将canvas转变为一个路径通过url作为背景</div>
     <script>
         (function () {
             var canvas = document.getElementsByTagName("canvas")[0];
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             var ctx = canvas.getContext("2d");
-            ctx.font = `bold italic ${canvas.width / 5}px monospace`;
+            ctx.font = `bold italic ${canvas.width / 4}px monospace`;
             var size1 = ctx.measureText("~ ");
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "yellow";
             ctx.fillText("*", (canvas.width - size1.width) / 2, (canvas.height + 200) / 2);
             var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             // 遍历canvas每个像素，找到文字的像素位置
@@ -102,7 +126,7 @@
                     Particle.finished = Particle.finished && particle.finished;
                 });
                 // 减少性能消耗
-                if (Particle.finished)cancelAnimationFrame(flush);
+                if (Particle.finished) cancelAnimationFrame(flush);
                 else { requestAnimationFrame(flush); }
             }
             function clickHandler () {
@@ -113,8 +137,11 @@
                 });
                 flush();
             }
-            canvas.addEventListener("click", clickHandler);
-            canvas.addEventListener("touch", clickHandler);
+            document.addEventListener("click", clickHandler);
+            document.addEventListener("touch", clickHandler);
+
+            // 方法二
+            document.getElementsByTagName("div").style.backgroundImage = `url('${canvas.toDataURL()}')`;
         })();
     </script>
 </body>

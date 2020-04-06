@@ -27,15 +27,15 @@
   <div id="div1"></div>
   <script>
     function getLocation () {
-      var qqq = document.getElementById("div1");
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          qqq.innerHTML = "Latitude: " + position.coords.latitude +
+        var qqq = document.getElementById("div1");
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                qqq.innerHTML = "Latitude: " + position.coords.latitude +
             "<br />Longitude: " + position.coords.longitude;
-        });
-      } else {
-        qqq.innerHTML = "Geolocation is not supported by this browser.";
-      }
+            });
+        } else {
+            qqq.innerHTML = "Geolocation is not supported by this browser.";
+        }
     }
     getLocation();
   </script>

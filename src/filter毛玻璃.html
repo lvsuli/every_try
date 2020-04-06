@@ -12,19 +12,7 @@
     padding: 0;
   }
 
-  body {
-    background: url("../imgs/sky.jpg") no-repeat 0 0 / cover;
-  }
-
   main {
-    /*水平垂直居中 */
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    /* 自身其他样式 */
     width: 600px;
     height: 280px;
     padding: 30px;
@@ -32,26 +20,41 @@
     background: rgba(255, 255, 255, 0.3);
     box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
     z-index: -1;
-    /* 文字样式 */
     text-indent: 2em;
     font-weight: bold;
     line-height: 2;
+    letter-spacing: 0.07em;
+    /* 空格 */
     /* white-space: pre-line; */
   }
 
-  main::after {
-    content: '';
-    /* fixed很关键，将背景与body背景重叠 */
-    background: url("../imgs/sky.jpg") no-repeat 0 0 / cover fixed;
+  /* 方法一 伪元素 */
+  body,main::after{
+    /* fixed很关键，将伪元素背景与body背景重叠???搞不懂原理？？？？？？？？？？？ */
+      background: url("../imgs/sky.jpg") no-repeat 0 0 / cover fixed;
+  }
+
+  main,main::after{
+    /*水平垂直居中 */
     position: absolute;
-    /* 如下是何用意？ */
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
+    margin: auto;
+  }
+
+  main::after {
+    content: '';
     filter: blur(7px);
     z-index: -1;
   }
+  
+  /* 方法二 实验中属性
+  main{
+    backdrop-filter: blur(7px);
+  } */
+
 </style>
 
 <body>
