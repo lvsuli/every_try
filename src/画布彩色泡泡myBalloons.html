@@ -26,6 +26,10 @@
         const canvas = document.getElementById("canvas");
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        // canvas.width = document.body.clientWidth;
+        // canvas.height = document.body.clientHeight;
+        // canvas.width = document.documentElement.clientWidth;
+        // canvas.height = document.documentElement.clientHeight;
         const ctx = canvas.getContext("2d");
 
         // 初始化气泡数组
