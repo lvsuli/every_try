@@ -91,7 +91,7 @@
         </div>
         <div class="lrBox">
             <a> &lt;</a>
-            <a onclick="changeNextImg()"> &gt;</a>
+            <a> &gt;</a>
         </div>
         <div class="circleBox">
             <div></div>
@@ -126,10 +126,10 @@
         } else { requestAnimationFrame(loop); }
     }
     loop();
-    // document.querySelector(".lrBox a:last-child").addEventListener("click", changeNextImg);
-    // imgBox.addEventListener("hover", function () {
-    //     document.querySelector("div.lrBox").style.visibility = "visible";
-    // });
+    document.querySelector(".lrBox a:last-child").addEventListener("click", changeNextImg);
+    imgBox.addEventListener("hover", function () {
+        document.querySelector("div.lrBox").style.visibility = "visible";
+    });
 </script>
 
 </html>
