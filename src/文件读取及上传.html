@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>普通表单上传</h1>
+    <form action="http://localhost:8888/api/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="resource">
+        <input type="submit">
+    </form>
+
+    <h1>普通表单inframe无刷新上传</h1>
+    <iframe src="" frameborder="0" name="refresh" style="display: none;"></iframe>
+    <form action="http://localhost:8888/api/upload" target="refresh" method="POST" enctype="multipart/form-data">
+        <input type="file" name="resource" multiple>
+        <input type="submit">
+    </form>
+
+    <h1>小文件读取上传FileReader.readAsText(file)</h1>
+    <input id="file2" type="file" name="resource">
+    <button id="btn2">上传</button>
+
+    <h1>大文件切片读取上传FileReader.readAsArrayBuffer(file)</h1>
+    <input id="file3" type="file" name="resource">
+    <button id="btn3">上传</button>
+
+    <h1>显示图片URL.createObjectURL(file)</h1>
+    <input type="file" accept="image/*" onchange="handleFile(this)" /><br />
+    <img style="width:200px;height:200px">
+
+    <script>
+        const btn2 = document.querySelector("#btn2");
+        btn2.addEventListener("click", () => {
+            const file2 = document.querySelector("#file2");
+            if (!file2.files.length) {
+                alert("请选择文件");
+            } else {
+                const fr = new FileReader();
+                fr.onloadend = function () {
+                    const text = this.result;
+                    console.log("text:", text);
+                    fetch("http://localhost:8888/api/text", { method: "post", body: JSON.stringify({ content: text }) })
+                        .then(response =>
+                            response.text()
+                        )
+                        .then(data => {
+                            console.log("上传成功，服务器返回数据：", data);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                };
+                fr.readAsText(file2.files[0]);
+            }
+        });
+    </script>
+    <script>
+        const btn3 = document.querySelector("#btn3");
+        btn3.addEventListener("click", () => {
+            const file3 = document.querySelector("#file3");
+            if (!file3.files.length) {
+                alert("请选择文件");
+            } else {
+                const fr = new FileReader();
+                fr.onloadend = function () {
+                    const text = this.result;
+                    console.log("text:", text);
+                    fetch("http://localhost:8888/api/blob", { method: "post", body: JSON.stringify({ content: text }) })
+                        .then(response =>
+                            response.text()
+                        )
+                        .then(data => {
+                            console.log("上传成功，服务器返回数据：", data);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                };
+                fr.readAsText(file3.files[0].slice(0, 40));
+            }
+        });
+    </script>
+    <script>
+        function handleFile (e) {
+            var file = e.files[0];
+            var blob = URL.createObjectURL(file);
+            var img = document.getElementsByTagName("img")[0];
+            img.src = blob;
+            img.onload = function (e) {
+                URL.revokeObjectURL(this.src); // 释放createObjectURL创建的对象##
+            };
+        }
+    </script>
+</body>
+
+</html>
