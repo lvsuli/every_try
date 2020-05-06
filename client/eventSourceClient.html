@@ -9,32 +9,32 @@
   <title>Document</title>
   <script>
     function check () {
-      const source = new EventSource("/api/eventSource");
-      source.addEventListener("open", function (es, e) {
-        console.log("连接已建立");
-      });
-      source.addEventListener("error", function (es, e) {
-        console.log("连接发生错误");
-      });
-      source.addEventListener("first", function (event) {
-        console.count("first");
-        console.table(JSON.parse(event.data));
-      });
-      source.addEventListener("continue", function (event) {
-        console.count("continue");
-        var p = document.createElement("p");
-        document.body.append(event.data, p);
-      });
-      return source;
+        const source = new EventSource("/api/eventSource");
+        source.addEventListener("open", function (es, e) {
+            console.log("连接已建立");
+        });
+        source.addEventListener("error", function (es, e) {
+            console.log("连接发生错误");
+        });
+        source.addEventListener("first", function (event) {
+            console.count("first");
+            console.table(JSON.parse(event.data));
+        });
+        source.addEventListener("continue", function (event) {
+            console.count("continue");
+            var p = document.createElement("p");
+            document.body.append(event.data, p);
+        });
+        return source;
     }
     var source = null;
 
     function start () {
-      source = check();
+        source = check();
     }
 
     function finish () {
-      source.close();
+        source.close();
     }
   </script>
 </head>
