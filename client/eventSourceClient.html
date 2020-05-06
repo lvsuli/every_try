@@ -2,46 +2,46 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon" /> -->
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-  <title>Document</title>
-  <script>
-    function check () {
-        const source = new EventSource("/api/eventSource");
-        source.addEventListener("open", function (es, e) {
-            console.log("连接已建立");
-        });
-        source.addEventListener("error", function (es, e) {
-            console.log("连接发生错误");
-        });
-        source.addEventListener("first", function (event) {
-            console.count("first");
-            console.table(JSON.parse(event.data));
-        });
-        source.addEventListener("continue", function (event) {
-            console.count("continue");
-            var p = document.createElement("p");
-            document.body.append(event.data, p);
-        });
-        return source;
-    }
-    var source = null;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon" /> -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>Document</title>
+    <script>
+        function check () {
+            const source = new EventSource("/api/eventSource");
+            source.addEventListener("open", function (es, e) {
+                console.log("连接已建立");
+            });
+            source.addEventListener("error", function (es, e) {
+                console.log("连接发生错误");
+            });
+            source.addEventListener("first", function (event) {
+                console.count("first");
+                console.table(JSON.parse(event.data));
+            });
+            source.addEventListener("continue", function (event) {
+                console.count("continue");
+                var p = document.createElement("p");
+                document.body.append(event.data, p);
+            });
+            return source;
+        }
+        var source = null;
 
-    function start () {
-        source = check();
-    }
+        function start () {
+            source = check();
+        }
 
-    function finish () {
-        source.close();
-    }
-  </script>
+        function finish () {
+            source.close();
+        }
+    </script>
 </head>
 
 <body>
-  <button onclick="start()">开始测试</button>
-  <button onclick="finish()">结束测试</button>
+    <button onclick="start()">开始测试</button>
+    <button onclick="finish()">结束测试</button>
 </body>
 
 </html>

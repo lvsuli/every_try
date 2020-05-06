@@ -55,6 +55,7 @@
                             response.text()
                         )
                         .then(data => {
+                            alert("上传成功");
                             console.log("上传成功，服务器返回数据：", data);
                         })
                         .catch(err => {
@@ -73,21 +74,24 @@
                 alert("请选择文件");
             } else {
                 const fr = new FileReader();
+                const chunkSize = 1024;
                 fr.onloadend = function () {
-                    const text = this.result;
-                    console.log("text:", text);
-                    fetch("http://localhost:8888/api/blob", { method: "post", body: JSON.stringify({ content: text }) })
+                    const buffer = new Uint8Array(this.result);
+                    console.log("buffer:", buffer);
+                    const snippet = new TextDecoder("unicode").decode(buffer);// 解码器
+                    fetch("http://localhost:8888/api/text", { method: "post", body: JSON.stringify({ content: snippet }) })
                         .then(response =>
                             response.text()
                         )
                         .then(data => {
+                            alert("上传成功");
                             console.log("上传成功，服务器返回数据：", data);
                         })
                         .catch(err => {
                             console.log(err);
                         });
                 };
-                fr.readAsText(file3.files[0].slice(0, 40));
+                fr.readAsArrayBuffer(file3.files[0].slice(0, chunkSize));
             }
         });
     </script>

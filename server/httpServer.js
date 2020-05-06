@@ -32,7 +32,7 @@ const server = http.createServer((req, res) => {
                 }
             }
         });
-    } else if (req.url === "/api/blob" && req.method.toLowerCase() === "post") {
+    } else if (req.url === "/api/text" && req.method.toLowerCase() === "post") {
         let text = "";
         req.on("data", (chunk) => {
             text += chunk; // 把接收到的一块数据拼接到str中
@@ -46,9 +46,17 @@ const server = http.createServer((req, res) => {
             // querystring.parse是将字符串转成对象{id:1,bane:zs,age:43}
             res.end(text);
         });
+    } else if (req.url === "/api/blob" && req.method.toLowerCase() === "post") {
+        let text = "";
+        req.on("data", (chunk) => {
+            text += chunk; // 把接收到的一块数据拼接到str中
+        });
+        req.on("end", () => {
+            console.log(text, JSON.parse(text));
+            res.end(text);
+        });
     } else { res.end("404"); }
 });
-
 server.listen(8888, () => {
     console.log("server is listening 8888");
 });
