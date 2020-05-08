@@ -15,7 +15,7 @@ const server = http.createServer((req, res) => {
         form.parse(req, function (err, fields, files) {
             if (err) {
                 console.log(err);
-                res.end(err);
+                res.end(JSON.stringify({ success: false, err: err }));
             } else {
                 if (files.resource.name) {
                     var avatarName = files.resource.name.replace(/^(.+)(\..+)$/, "$1_" + (new Date()).getTime() + "$2");
@@ -26,9 +26,9 @@ const server = http.createServer((req, res) => {
                     readStream.on("end", function () {
                         fs.unlinkSync(files.resource.path);
                     });
-                    res.end("200");
+                    res.end(JSON.stringify({ success: true }));
                 } else {
-                    res.end("please select file");
+                    res.end(JSON.stringify({ success: false, err: "please select file" }));
                 }
             }
         });

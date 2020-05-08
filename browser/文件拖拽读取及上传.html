@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base target="_blank">
+    <title>Do文件拖拽 读取 上传cument</title>
+    <style>
+        * {
+            padding: 0px;
+        }
+
+        div {
+            float: left;
+            border: 1px gray solid;
+            margin: 6px;
+        }
+
+        #div1,
+        #div2 {
+            width: 250px;
+            height: 200px;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #aaaaaa;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>小文件读取FileReader.readAsText(file)</h1>
+        <input id="file2" type="file" name="resource">
+        <button id="btn2">读取</button>
+        <a
+            href="https://joji.me/zh-cn/blog/processing-huge-files-using-filereader-readasarraybuffer-in-web-browser/">请参考</a>
+    </div>
+    <script>
+        const btn2 = document.querySelector("#btn2");
+        btn2.addEventListener("click", () => {
+            const file2 = document.querySelector("#file2");
+            if (!file2.files.length) {
+                alert("请选择文件");
+            } else {
+                const fr = new FileReader();
+                fr.onloadend = function () {
+                    alert(this.result);
+                };
+                fr.readAsText(file2.files[0]);// .slice(0, 80)
+            }
+        });
+    </script>
+
+    <div>
+        <h1>大文件切片读取FileReader.readAsArrayBuffer(file)</h1>
+        <input id="file3" type="file" name="resource">
+        <button id="btn3">读取</button>
+        <a
+            href="https://joji.me/zh-cn/blog/processing-huge-files-using-filereader-readasarraybuffer-in-web-browser/">请参考</a>
+    </div>
+    <script>
+        const btn3 = document.querySelector("#btn3");
+        btn3.addEventListener("click", () => {
+            const file3 = document.querySelector("#file3");
+            if (!file3.files.length) {
+                alert("请选择文件");
+            } else {
+                const fr = new FileReader();
+                const chunkSize = 1024;
+                fr.onloadend = function () {
+                    const buffer = new Uint8Array(this.result);
+                    console.log("buffer:", buffer);
+                    const snippet = new TextDecoder("unicode").decode(buffer);// 解码器
+                    alert(snippet);
+                };
+                fr.readAsArrayBuffer(file3.files[0].slice(0, chunkSize));
+            }
+        });
+    </script>
+
+    <div>
+        <h1>图片预览FileReader.readAsDataURL(file)</h1>
+        <input type="file" accept="image/*" onchange="handleFile1(this)" />
+        <br>
+        <img style="width:200px;height:200px">
+    </div>
+    <script>
+        function handleFile1 (e) {
+            var file = e.files[0];
+            var img = document.getElementsByTagName("img")[0];
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                img.src = this.result;
+            };
+        }
+    </script>
+
+    <div>
+        <h1>图片预览URL.createObjectURL(file)</h1>
+        <input type="file" accept="image/*" onchange="handleFile2(this)" />
+        <a
+            href="https://justcode.ikeepstudying.com/2018/05/javascript-web-api%E4%B8%AD%E7%9A%84blob-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E5%88%9B%E5%BB%BA%E5%92%8C%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6-%E4%BD%BF%E7%94%A8url-createobjecturl%E5%88%9B%E5%BB%BAu/">1请参考</a>
+        <a href="https://sources.ikeepstudying.com/blob/">2更多blob实例请点击</a><br>
+        <img style="width:200px;height:200px">
+    </div>
+    <script>
+        function handleFile2 (e) {
+            var file = e.files[0];
+            var img = document.getElementsByTagName("img")[1];
+            var blob = URL.createObjectURL(file);
+            img.src = blob;
+            img.onload = function (e) {
+                URL.revokeObjectURL(this.src); // 释放createObjectURL创建的对象##
+            };
+        }
+    </script>
+
+    <div>
+        <h1>元素拖拽</h1>
+        <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <img src="../imgs/spring.jpg" draggable="true" ondragstart="drag(event)" id="drag1" />
+        </div>
+        <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+    <script>
+        function allowDrop (ev) {
+            ev.preventDefault();
+        }
+
+        function drag (ev) {
+            ev.dataTransfer.setData("Text", ev.target.id);
+        }
+
+        function drop (ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("Text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
+
+    <div>
+        <h1>普通表单上传</h1>
+        <form action="http://localhost:8888/api/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="resource">
+            <input type="submit" value="上传">
+        </form>
+    </div>
+
+    <div>
+        <h1>普通表单inframe无刷新上传</h1>
+        <iframe src="" frameborder="0" name="refresh" style="display: none;"></iframe>
+        <form action="http://localhost:8888/api/upload" target="refresh" method="POST" enctype="multipart/form-data">
+            <input type="file" name="resource" multiple>
+            <input type="submit" value="上传">
+            <a href="https://segmentfault.com/a/1190000004057022">请参考</a>
+        </form>
+    </div>
+
+    <div style="width: 600px;height: 314px;overflow: hidden;">
+        <h1>拖拽上传</h1>
+        <button style="float: right;" id="upload">上传</button>
+        <div id="target" style="width: 100%;height: 227px;margin: 0;line-height: 227px;text-align: center;"
+            ondragover="drapoverHandler(event)" ondrop="dropHandler(event)">
+            请拖拽文件到此处
+        </div>
+    </div>
+    <script>
+        var resource = null;
+        function drapoverHandler (e) {
+            // 默认地，无法将数据/元素放置到其他元素中。如果需要设置允许放置，我们必须阻止对元素的默认处理方式。
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        function dropHandler (e) {
+            // 调用 preventDefault() 来避免浏览器对数据的默认处理（drop 事件的默认行为是以链接形式打开）
+            console.log(e);
+            e.preventDefault();
+            e.stopPropagation();
+            var fileList = e.dataTransfer.files;
+            var target = document.querySelector("#target");
+            // 检测是否是拖拽文件到页面的操作
+            if (fileList.length == 0) {
+                return;
+            }
+            target.innerHTML = fileList[0].name;
+            resource = fileList[0];
+        }
+        document.querySelector("#upload").addEventListener("click", function () {
+            var formData = new FormData();
+            formData.append("resource", resource);
+            fetch("http://localhost:8888/api/upload", {
+                method: "post",
+                body: formData
+            })
+                .then(response => response.json())
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("上传失败", error);
+                })
+                .then(response => {
+                    console.info("response:", response);
+                    alert("上传成功");
+        });
+        });
+    </script>
+</body>
+
+</html>
