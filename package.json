@@ -4,6 +4,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "formidable": "^1.2.2",
+    "rimraf": "^3.0.2",
     "ws": "^7.2.1"
   },
   "devDependencies": {

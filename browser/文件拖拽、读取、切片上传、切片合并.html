@@ -166,6 +166,11 @@
     <div style="width: 600px;height: 314px;overflow: hidden;">
         <h1>拖拽上传</h1>
         <button style="float: right;" id="upload">上传</button>
+        <div id="progress" style="border: 0;visibility: hidden;" style="visibility:hidden;">
+            <progress value="0" max="100">
+            </progress>
+            <span>0%</span>
+        </div>
         <div id="target" style="width: 100%;height: 227px;margin: 0;line-height: 227px;text-align: center;"
             ondragover="drapoverHandler(event)" ondrop="dropHandler(event)">
             请拖拽文件到此处
@@ -173,6 +178,11 @@
     </div>
     <script>
         var resource = null;
+        // uuid生成器
+        const UUIDGeneratorBrowser = () =>
+            ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+                (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+            );
         function drapoverHandler (e) {
             // 默认地，无法将数据/元素放置到其他元素中。如果需要设置允许放置，我们必须阻止对元素的默认处理方式。
             e.preventDefault();
@@ -193,21 +203,51 @@
             resource = fileList[0];
         }
         document.querySelector("#upload").addEventListener("click", function () {
-            var formData = new FormData();
-            formData.append("resource", resource);
-            fetch("http://localhost:8888/api/upload", {
-                method: "post",
-                body: formData
-            })
-                .then(response => response.json())
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("上传失败", error);
+            if (!resource) {
+                alert("请选择文件");
+                return;
+            }
+            const progressDiv = document.querySelector("progress");
+            progressDiv.style.visibility = "visible";
+            const chunkSize = 1024 * 1024;
+            const chunkNum = Math.ceil(resource.size / chunkSize);
+            const uuid = UUIDGeneratorBrowser();
+            for (let i = 0; i < chunkNum; i++) {
+                let chunk = null;
+                if (i === chunkNum - 1) {
+                    // slice参数 start起始索引  end结束索引不包含
+                    chunk = resource.slice(i * chunkSize, resource.size);
+                    // console.log(i * chunkSize, resource.size);
+                } else {
+                    chunk = resource.slice(i * chunkSize, (i + 1) * chunkSize);
+                    // console.log(i * chunkSize, (i + 1) * chunkSize);
+                }
+                var formData = new FormData();
+                formData.append("fileName", resource.name);
+                formData.append("chunkSize", chunkSize);
+                formData.append("chunkNum", chunkNum);
+                formData.append("chunkIndex", i);
+                formData.append("chunk", chunk);
+                formData.append("uuid", uuid);
+                // console.info(formData);
+                fetch("http://localhost:8888/api/blob", {
+                    method: "post",
+                    body: formData
                 })
-                .then(response => {
-                    console.info("response:", response);
-                    alert("上传成功");
-        });
+                    .then(response => response.json())
+                    .catch(error => {
+                        console.error("Error:", error);
+                        // alert("json解析失败！", error);
+                    })
+                    .then(response => {
+                        console.info("response:", response);
+                        if (response.success && response.type === "all" || !response.success) {
+                            const progress = response.currentChunknum / chunkNum * 100;
+                            progressDiv.firstChild.value = progress;
+                            progressDiv.lastChild.textContent = progress + "%";
+                        }
+                    });
+            }
         });
     </script>
 </body>
