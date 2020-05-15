@@ -81,13 +81,13 @@
 
         // pc端跟踪鼠标移动生成气泡
         canvas.addEventListener("mousemove", function (event) {
-            new Balloon(event.clientX, event.clientY);
+            if (ballons.length < 300) { new Balloon(event.clientX, event.clientY); }
         });
         // 移动端跟踪手指移动事件
         canvas.addEventListener("touchmove", function (event) {
             event.preventDefault(); // 阻止触摸事件的默认行为，即阻止滚屏
             var touch = event.targetTouches[0]; // 获取当前元素上的触控点
-            new Balloon(touch.clientX, touch.clientY);
+            if (ballons.length < 300) { new Balloon(touch.clientX, touch.clientY); }
         });
 
         // 刷新页面方式一
