@@ -183,11 +183,13 @@
             ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
                 (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
             );
+
         function drapoverHandler (e) {
             // 默认地，无法将数据/元素放置到其他元素中。如果需要设置允许放置，我们必须阻止对元素的默认处理方式。
             e.preventDefault();
             e.stopPropagation();
         }
+
         function dropHandler (e) {
             // 调用 preventDefault() 来避免浏览器对数据的默认处理（drop 事件的默认行为是以链接形式打开）
             console.log(e);
@@ -202,16 +204,25 @@
             target.innerHTML = fileList[0].name;
             resource = fileList[0];
         }
+
         document.querySelector("#upload").addEventListener("click", function () {
             if (!resource) {
                 alert("请选择文件");
                 return;
             }
-            const progressDiv = document.querySelector("progress");
+            const progressDiv = document.querySelector("#progress");
+            progressDiv.firstElementChild.value = 0;
+            progressDiv.lastElementChild.innerText = "0%";
             progressDiv.style.visibility = "visible";
+            const maxHttpNum = 4;
             const chunkSize = 1024 * 1024;
             const chunkNum = Math.ceil(resource.size / chunkSize);
             const uuid = UUIDGeneratorBrowser();
+            console.log("uuid:", uuid);
+            var currentHttpNum = 0;
+            var currentChunkIndex = 0;
+            var chunks = [];
+            // 文件分片
             for (let i = 0; i < chunkNum; i++) {
                 let chunk = null;
                 if (i === chunkNum - 1) {
@@ -222,30 +233,57 @@
                     chunk = resource.slice(i * chunkSize, (i + 1) * chunkSize);
                     // console.log(i * chunkSize, (i + 1) * chunkSize);
                 }
+                chunks.push(chunk);
+            }
+            console.log("chunks:", chunks);
+            // 有空闲连接
+            while (currentHttpNum < maxHttpNum) {
+                // 有分片任务
+                if (currentChunkIndex < chunkNum) {
+                    doFetch();
+                } else { // 任务完成
+                    break;
+                }
+            }
+            // 发送上传请求,在回调函数中继续补充请求
+            function doFetch () {
                 var formData = new FormData();
                 formData.append("fileName", resource.name);
                 formData.append("chunkSize", chunkSize);
                 formData.append("chunkNum", chunkNum);
-                formData.append("chunkIndex", i);
-                formData.append("chunk", chunk);
+                formData.append("chunkIndex", currentChunkIndex);
+                formData.append("chunk", chunks[currentChunkIndex]);
                 formData.append("uuid", uuid);
                 // console.info(formData);
+                currentChunkIndex++;
+                currentHttpNum++;
                 fetch("http://localhost:8888/api/blob", {
                     method: "post",
                     body: formData
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        return response.json();
+                    })
                     .catch(error => {
                         console.error("Error:", error);
-                        // alert("json解析失败！", error);
+                        alert("json解析失败！", error);
+                        currentHttpNum--;
+                        if (currentChunkIndex < chunkNum) { doFetch(); }
                     })
                     .then(response => {
                         console.info("response:", response);
-                        if (response.success && response.type === "all" || !response.success) {
-                            const progress = response.currentChunknum / chunkNum * 100;
-                            progressDiv.firstChild.value = progress;
-                            progressDiv.lastChild.textContent = progress + "%";
+                        if (response.success) {
+                            const progress = Math.floor(response.currentChunknum / chunkNum * 100);
+                            progressDiv.firstElementChild.value = progress;
+                            progressDiv.lastElementChild.innerText = progress + "%";
+                            if (response.type === "all") {
+                                progressDiv.firstElementChild.value = 100;
+                                progressDiv.lastElementChild.innerText = "100%";
+                                alert("文件上传成功！");
+                            }
                         }
+                        currentHttpNum--;
+                        if (currentChunkIndex < chunkNum) { doFetch(); }
                     });
             }
         });
