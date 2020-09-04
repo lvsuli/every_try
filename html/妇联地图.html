@@ -38,16 +38,22 @@
 
 </html>
 <script type="text/javascript">
-  // 百度地图API功能
+  // 地图控件
   var map = new BMap.Map("allmap");
   map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+  var top_left_control = new BMap.ScaleControl({ anchor: BMAP_ANCHOR_TOP_LEFT });// 左上角，添加比例尺
+  var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+  map.addControl(top_left_control);
+  map.addControl(top_left_navigation);
+
+  //地图初始中心点及缩放级别
   var point = new BMap.Point(112.593199, 35.098901);
   map.centerAndZoom(point, 13);
   var marker = new BMap.Marker(point);  // 创建标注
   map.addOverlay(marker);               // 将标注添加到地图中
   marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 
-  // 随机向地图添加25个标注
+  // 随机向地图添加标注
   var bounds = map.getBounds();
   var sw = bounds.getSouthWest();
   var ne = bounds.getNorthEast();
@@ -59,6 +65,7 @@
   //   img: "../imgs/lady.png"
   // }]
   for (var i = 0; i < 10; i++) {
+    //添加标注点
     var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
     var imgUrl = ''
     if (i % 3 === 0) imgUrl = "../imgs/lady.png"
@@ -69,7 +76,7 @@
     var marker = new BMap.Marker(point, { icon: myIcon });
     map.addOverlay(marker);
     marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-
+    //点击弹出图文框
     var sContent =
       `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>天安门</h4> 
       <img style='float:right;margin:4px' id='imgDemo' src='../imgs/spring.jpg' width='139' height='104' title='天安门'/>
