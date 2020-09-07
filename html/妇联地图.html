@@ -4,6 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <title>妇联地图</title>
   <style type="text/css">
     body,
     html,
@@ -28,15 +29,14 @@
       float: left;
     }
   </style>
-  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UfeymeKDi2eb3Yfvjz7XuI8e0waWuKwW"></script>
-  <title>妇联地图</title>
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=UfeymeKDi2eb3Yfvjz7XuI8e0waWuKwW"></script>
+  <script src="../json/deep_blue.json"></script>
 </head>
 
 <body>
   <div id="allmap"></div>
 </body>
 
-</html>
 <script type="text/javascript">
   // 地图控件
   var map = new BMap.Map("allmap");
@@ -49,6 +49,12 @@
   //地图初始中心点及缩放级别
   var point = new BMap.Point(112.593199, 35.098901);
   map.centerAndZoom(point, 13);
+  map.setMapStyleV2({ styleJson: styleJson });
+  // map.setMapStyleV2({
+  //   styleId: 'd8cf1bf2f8dbf3e784afbb376a1ad88f'
+  //   // styleId: 'd5da5ab342723f7712775fcdb431ae9a'
+  //   // styleId: 'cc74c9dc6950757a35fda59be5be641a'
+  // });
   var marker = new BMap.Marker(point);  // 创建标注
   map.addOverlay(marker);               // 将标注添加到地图中
   marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
@@ -71,17 +77,17 @@
     if (i % 3 === 0) imgUrl = "../imgs/lady.png"
     else if (i % 3 == 1) imgUrl = "../imgs/grandma.png"
     else imgUrl = "../imgs/base.png"
-    var myIcon = new BMap.Icon(imgUrl, new BMap.Size(50, 50));
-    myIcon.setImageSize(new BMap.Size(30, 30))
+    var myIcon = new BMap.Icon(imgUrl, new BMap.Size(40, 40));
+    myIcon.setImageSize(new BMap.Size(40, 40))
     var marker = new BMap.Marker(point, { icon: myIcon });
     map.addOverlay(marker);
     marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
     //点击弹出图文框
     var sContent =
       `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>天安门</h4> 
-      <img style='float:right;margin:4px' id='imgDemo' src='../imgs/spring.jpg' width='139' height='104' title='天安门'/>
-      <p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>天安门坐落在中国北京市中心,故宫的南侧,与天安门广场隔长安街相望,是清朝皇城的大门...</p>
-      </div>`;
+        <img style='float:right;margin:4px' id='imgDemo' src='../imgs/spring.jpg' width='139' height='104' title='天安门'/>
+        <p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>天安门坐落在中国北京市中心,故宫的南侧,与天安门广场隔长安街相望,是清朝皇城的大门...</p>
+        </div>`;
     var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
     marker.addEventListener("click", function () {
       this.openInfoWindow(infoWindow);
@@ -92,3 +98,5 @@
     });
   }
 </script>
+
+</html>
