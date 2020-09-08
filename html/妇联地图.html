@@ -38,6 +38,48 @@
 </body>
 
 <script type="text/javascript">
+  //标注类
+  function InfoMarker(map, type, title, lng, lat, img, detail) {
+    this.type = type
+    this.title = title
+    this.lng = lng
+    this.lat = lat
+    this.img = img
+    this.detail = detail
+    this.map = map
+    this.marker = null
+    this.infoWindow = null
+    //添加标注点
+    var iconUrl = ''
+    if (this.type === "wife") iconUrl = "../imgs/wife.png"
+    else if (this.type === "base") iconUrl = "../imgs/base.png"
+    else iconUrl = "../imgs/flower.png"
+    var myIcon = new BMap.Icon(iconUrl, new BMap.Size(40, 40));
+    myIcon.setImageSize(new BMap.Size(40, 40))
+    this.marker = new BMap.Marker(new BMap.Point(this.lng, this.lat), { icon: myIcon });
+    this.marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+    //点击标注点弹出图文框
+    var that = this
+    that.marker.addEventListener("click", function () {
+      var sContent =
+        `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${that.title}</h4> 
+        <img style='float:right;margin:4px' id='imgDemo${InfoMarker.currentID++}' src='${that.img?that.img:iconUrl}' width='139' height='104'/>
+        <p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>${that.detail}...</p>
+        </div>`;
+      that.infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+      that.marker.openInfoWindow(that.infoWindow);
+      // 图片加载完毕重绘infowindow
+      // document.getElementById(`imgDemo${InfoMarker.currentID}`).onload = function () {
+      //   that.infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+      // }
+    });
+  }
+  InfoMarker.currentID = 0
+  InfoMarker.prototype.paint = function () {
+    this.map.addOverlay(this.marker);
+  }
+</script>
+<script type="text/javascript">
   // 地图控件
   var map = new BMap.Map("allmap");
   map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
@@ -48,54 +90,99 @@
 
   //地图初始中心点及缩放级别
   var point = new BMap.Point(112.593199, 35.098901);
-  map.centerAndZoom(point, 13);
+  map.centerAndZoom(point, 11);
   map.setMapStyleV2({ styleJson: styleJson });
   // map.setMapStyleV2({
   //   styleId: 'd8cf1bf2f8dbf3e784afbb376a1ad88f'
   //   // styleId: 'd5da5ab342723f7712775fcdb431ae9a'
   //   // styleId: 'cc74c9dc6950757a35fda59be5be641a'
   // });
-  var marker = new BMap.Marker(point);  // 创建标注
-  map.addOverlay(marker);               // 将标注添加到地图中
-  marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 
-  // 随机向地图添加标注
-  var bounds = map.getBounds();
-  var sw = bounds.getSouthWest();
-  var ne = bounds.getNorthEast();
-  var lngSpan = Math.abs(sw.lng - ne.lng);
-  var latSpan = Math.abs(ne.lat - sw.lat);
-  // var pois = [{
-  //   lng: sw.lng + lngSpan * (Math.random() * 0.7),
-  //   lat: ne.lat - latSpan * (Math.random() * 0.7),
-  //   img: "../imgs/lady.png"
-  // }]
-  for (var i = 0; i < 10; i++) {
-    //添加标注点
-    var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
-    var imgUrl = ''
-    if (i % 3 === 0) imgUrl = "../imgs/lady.png"
-    else if (i % 3 == 1) imgUrl = "../imgs/grandma.png"
-    else imgUrl = "../imgs/base.png"
-    var myIcon = new BMap.Icon(imgUrl, new BMap.Size(40, 40));
-    myIcon.setImageSize(new BMap.Size(40, 40))
-    var marker = new BMap.Marker(point, { icon: myIcon });
-    map.addOverlay(marker);
-    marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-    //点击弹出图文框
-    var sContent =
-      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>天安门</h4> 
-        <img style='float:right;margin:4px' id='imgDemo' src='../imgs/spring.jpg' width='139' height='104' title='天安门'/>
-        <p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>天安门坐落在中国北京市中心,故宫的南侧,与天安门广场隔长安街相望,是清朝皇城的大门...</p>
-        </div>`;
-    var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
-    marker.addEventListener("click", function () {
-      this.openInfoWindow(infoWindow);
-      //图片加载完毕重绘infowindow
-      document.getElementById('imgDemo').onload = function () {
-        infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
-      }
-    });
+  var pois_wife_base = [
+    {
+      type: "base",
+      title: "济源市后王庄村鞋帮加工厂",
+      lng: 112.120329,
+      lat: 35.164524,
+      img: "",
+      detail: ""
+    }, {
+      type: "base",
+      title: "济源市邵原镇劳保厂",
+      lng: 112.139613,
+      lat: 35.180663,
+      img: "",
+      detail: ""
+    }, {
+      type: "base",
+      title: "济源市大峪镇东沟青萝河农家乐示范基地",
+      lng: 112.33235,
+      lat: 35.020009,
+      img: "",
+      detail: ""
+    }, {
+      type: "base",
+      title: "济源市栗树沟古仰韶农业生态有限公司",
+      lng: 112.530691,
+      lat: 34.976631,
+      img: "",
+      detail: ""
+    }, {
+      type: "base",
+      title: "济源市大岭农机专业合作社",
+      lng: 112.267965,
+      lat: 35.056627,
+      img: "",
+      detail: ""
+    }, {
+      type: "base",
+      title: "济源市邵原镇黄楝树村",
+      lng: 112.150475,
+      lat: 35.213173,
+      img: "",
+      detail: ""
+    }, {
+      type: "base",
+      title: "济源市下冶镇王树沟村巾帼脱贫示范基地",
+      lng: 112.223988,
+      lat: 35.093997,
+      img: "",
+      detail: ""
+    },
+  ]
+  var pois_beauty_guard = [
+    {
+      type: "guard",
+      title: "承留镇花石村",
+      lng: 112.508724,
+      lat: 35.054967,
+      img: "../imgs/guards/花石.jpg",
+      detail: `济源市西南十公里处，国家级天然氧吧——南山森林公园入口。绿树掩映着一个风景秀丽的美丽乡村——花石村。常年奔涌的商水泉，千年文明的商山寺，向人们讲诉着“四皓隐居”的故事。
+        随着乡村振兴项目的强势发展，这里已成为远近闻名的全域旅游示范点。全村包括两个自然村，总面积4.3平方公里，居民236户，常住人口856人，其中农业人口756人，林地1218亩，耕地818亩。
+        全村人牢记绿水青山就是金山银山，经过数代人的精心呵护，80%的森林覆盖率永立绿化潮头。6.5公里的森林步道，47000平方米的商水河水域，赋予该村的钟灵蜀绣。2009年土地流转引来了各地金凤凰，原有的传统农田，全部栽种了名贵树种，300亩桃林，400亩风景树，100亩草莓采摘园，吸引了各地游客蜂拥而至。1200亩南山梅花园，在雪地上点缀着点点花红，吸引着游客的眼球。2018年为进一步提升人居环境，投资80万元对全村闲置宅基地进行了一宅变四院建设。果园、游园、菜园、花园随处可见。投入1000万元的河道治理打造了商水河畔的水绿草青、鸟语花香。50余人的园林作业队呵护着一片河湖美景。各种稀缺鸟类常年栖息在碧波荡漾的商水河面。人与自然的融合在这里得到了充分体现。
+        2018年8月，花石村主动承担济源市妇联创建“五美庭院”工作任务，发动全村妇女成立了“四组一队”——经济发展组.妇女权益组.政策宣教组.家风家训组和巾帼志愿者服务队。在全村掀起了家家争创“五美庭院”活动高潮，村委成立了评比小组，定时进行检查，短短一个月时间，六十五户家庭被评为达标家庭，其中八户被评为示范户。
+        为实现创建工作常态化，确保人居环境稳步提升，村委提出了干部包片.村民代表包巷.各个党员包户的责任落实机制。创建成效与年终工作总结挂钩，对工作积极的人员给以物质奖励，落后的给以批评，计入绩效。对表现突出的家庭给以庭院盆景和卫生洁具等奖励。在大家的共同努力下，至2018年底，全村“五美庭院”达标214户，占全村庭院的90%。
+        2019年五月，全村完成了垃圾分类工作任务，实现了生活垃圾无害化处理。巾帼志愿者服务队每天奔走在大街小巷，一家一户宣传垃圾分类的好处和方法。成为一道靓丽的风景，过去随处可见的垃圾现在已成为历史。
+        随着国家乡村振兴战略部署发展，生态宜居，乡风文明成为农村的发展方向。伴随济源产城融合示范区的强势掘起，花石村的乡村振兴亮点会更加辉煌。`
+    }, {
+      type: "guard",
+      title: "济水街道西关居委会",
+      lng: 112.587585,
+      lat: 35.099062,
+      img: "",
+      detail: ""
+    }, {
+      type: "guard",
+      title: "玉泉街道陆家岭居委会",
+      lng: 112.639938,
+      lat: 35.118363,
+      img: "",
+      detail: ""
+    }]
+  var pois_wife=[]
+  for (poi of [...pois_wife,...pois_wife_base, ...pois_beauty_guard]) {
+    let marker = new InfoMarker(map, poi.type, poi.title, poi.lng, poi.lat, poi.img, poi.detail)
+    marker.paint()
   }
 </script>
 
