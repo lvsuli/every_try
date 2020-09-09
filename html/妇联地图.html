@@ -15,23 +15,10 @@
       margin: 0;
       font-family: "微软雅黑";
     }
-
-    #l-map {
-      height: 100%;
-      width: 78%;
-      float: left;
-      border-right: 2px solid #bcbcbc;
-    }
-
-    #r-result {
-      height: 100%;
-      width: 20%;
-      float: left;
-    }
   </style>
-  <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=UfeymeKDi2eb3Yfvjz7XuI8e0waWuKwW"></script> -->
-  <script type="text/javascript" src="../js/mp_load.js"></script>
-  <script type="text/javascript" src="../js/bmap_offline_api_min.js"></script>
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=UfeymeKDi2eb3Yfvjz7XuI8e0waWuKwW"></script>
+  <!-- <script type="text/javascript" src="../js/mp_load.js"></script>
+  <script type="text/javascript" src="../js/bmap_offline_api_min.js"></script> -->
   <script src="../json/deep_blue.json"></script>
 </head>
 
@@ -52,13 +39,16 @@
     this.marker = null
     this.infoWindow = null
     //添加标注点
-    var iconUrl = ''
+    let iconUrl = ''
     if (this.type === "wife") iconUrl = "../imgs/wife.png"
     else if (this.type === "base") iconUrl = "../imgs/base.png"
     else iconUrl = "../imgs/flower.png"
-    var myIcon = new BMap.Icon(iconUrl, new BMap.Size(40, 40));
+    let myIcon = new BMap.Icon(iconUrl, new BMap.Size(40, 40));
     myIcon.setImageSize(new BMap.Size(40, 40))
     this.marker = new BMap.Marker(new BMap.Point(this.lng, this.lat), { icon: myIcon });
+    let label = new BMap.Label(this.title, { offset: new BMap.Size(30, 0) });
+    label.setStyle({ border: "none", backgroundColor: 0.05, color: "white" });
+    this.marker.setLabel(label);
     this.marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
     //点击标注点弹出图文框
     var that = this
@@ -84,13 +74,13 @@
   // 地图控件
   var map = new BMap.Map("allmap");
   map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-  var top_left_control = new BMap.ScaleControl({ anchor: BMAP_ANCHOR_TOP_LEFT });// 左上角，添加比例尺
+  var top_left_scale = new BMap.ScaleControl({ anchor: BMAP_ANCHOR_TOP_LEFT });// 左上角，添加比例尺
   var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
-  map.addControl(top_left_control);
+  map.addControl(top_left_scale);
   map.addControl(top_left_navigation);
 
   //地图初始中心点及缩放级别
-  var point = new BMap.Point(112.593199, 35.098901);
+  var point = new BMap.Point(112.408611, 35.094444);
   map.centerAndZoom(point, 11);
   map.setMapStyleV2({ styleJson: styleJson });
   // map.setMapStyleV2({
@@ -99,52 +89,71 @@
   //   // styleId: 'cc74c9dc6950757a35fda59be5be641a'
   // });
 
+  //添加行政区划  
+  var boundary = new BMap.Boundary();
+  boundary.get("济源市", function (rs) {       //获取行政区域
+    // map.clearOverlays();        //清除地图覆盖物       
+    var count = rs.boundaries.length; //行政区域的点有多少个
+    if (count === 0) {
+      alert('未能获取当前输入行政区域');
+      return;
+    }
+    var pointArray = [];
+    for (var i = 0; i < count; i++) {
+      var ply = new BMap.Polygon(rs.boundaries[i], { strokeWeight: 2, strokeColor: "#ff0000", fillColor: "rgb(4 49 114)" }); //建立多边形覆盖物
+      map.addOverlay(ply);  //添加覆盖物
+      pointArray = pointArray.concat(ply.getPath());
+    }
+    // map.setViewport(pointArray);    //调整视野  
+  });
+
+  //添加兴趣点
   var pois_wife_base = [
     {
       type: "base",
-      title: "济源市后王庄村鞋帮加工厂",
+      title: "后王庄村鞋帮加工厂",
       lng: 112.120329,
       lat: 35.164524,
       img: "",
       detail: ""
     }, {
       type: "base",
-      title: "济源市邵原镇劳保厂",
+      title: "邵原镇劳保厂",
       lng: 112.139613,
       lat: 35.180663,
       img: "",
       detail: ""
     }, {
       type: "base",
-      title: "济源市大峪镇东沟青萝河农家乐示范基地",
+      title: "大峪镇东沟青萝河农家乐示范基地",
       lng: 112.33235,
       lat: 35.020009,
       img: "",
       detail: ""
     }, {
       type: "base",
-      title: "济源市栗树沟古仰韶农业生态有限公司",
+      title: "栗树沟古仰韶农业生态有限公司",
       lng: 112.530691,
       lat: 34.976631,
       img: "",
       detail: ""
     }, {
       type: "base",
-      title: "济源市大岭农机专业合作社",
+      title: "大岭农机专业合作社",
       lng: 112.267965,
       lat: 35.056627,
       img: "",
       detail: ""
     }, {
       type: "base",
-      title: "济源市邵原镇黄楝树村",
+      title: "邵原镇黄楝树村",
       lng: 112.150475,
       lat: 35.213173,
       img: "",
       detail: ""
     }, {
       type: "base",
-      title: "济源市下冶镇王树沟村巾帼脱贫示范基地",
+      title: "下冶镇王树沟村巾帼脱贫示范基地",
       lng: 112.223988,
       lat: 35.093997,
       img: "",
