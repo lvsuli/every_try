@@ -12,19 +12,28 @@
     }
 
     div.box {
-      margin: 5px 20px;
+      margin: 20px;
       height: 50px;
-      border: black 2px solid;
+      
+    }
+
+    #div0 {
+      height: 300px;
+      border: greenyellow 2px gold;
+      /* 边框发光效果 */
+      box-shadow:inset 5px 5px 20px gold;
+      /* background-image: linear-gradient(90deg, #0446af 30%, rgba(12,49,164,0)); */
+      background-image: linear-gradient(90deg, #0446af 30%, transparent);
     }
 
     #div1 {
-      background-image: linear-gradient(black, white);
+      /* background-image: linear-gradient(black, white); */
       background-image: linear-gradient(180deg, black, white);
     }
 
     #div2 {
       background-image: linear-gradient(-90deg, black 30%, white 60%);
-      background-size: 20px 20px;
+      background-size: 200px 200px;
     }
 
     #div3 {
@@ -79,12 +88,12 @@
 
     #div10 {
       background: repeating-radial-gradient(at 0% 50%, red, yellow 8%, blue 15%);
-
     }
   </style>
 </head>
 
 <body>
+  <div class="box" id="div0">0</div>
   <div class="box" id="div1">1</div>
   <div class="box" id="div2">2</div>
   <div class="box" id="div3">3</div>

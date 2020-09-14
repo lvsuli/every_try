@@ -41,8 +41,8 @@
     //添加标注点
     let iconUrl = ''
     if (this.type === "wife") iconUrl = "../imgs/wife.png"
-    else if (this.type === "base") iconUrl = "../imgs/base.png"
-    else iconUrl = "../imgs/flower.png"
+    else if (this.type === "base") iconUrl = "../imgs/factory.png"
+    else iconUrl = "../imgs/blueHouse.png"
     let myIcon = new BMap.Icon(iconUrl, new BMap.Size(40, 40));
     myIcon.setImageSize(new BMap.Size(40, 40))
     this.marker = new BMap.Marker(new BMap.Point(this.lng, this.lat), { icon: myIcon });
@@ -180,7 +180,7 @@
       title: "济水街道西关居委会",
       lng: 112.587585,
       lat: 35.099062,
-      img: "",
+      img: "../imgs/guards/西关村.jpg",
       detail: `<p>围绕“庭院环境治理、生活垃圾分类、巾帼志愿服务、品牌活动打造、文明家风培育” 等五项行动，主要做了以下几方面工作：
       </p><p>一、为迎接全国文明城市复审工作，今年，西关居委会累计投入30余万元，扎实开展创建“百日攻坚”、“双洗双修双划”、文明志愿者服务等活动，按要求完成各项创建任务，重点对民康街进行改造提升，对30个小巷粉刷墙面10000余平方，重新施化道路标线，对路两边绿化带进行扩宽硬化、树木进行修剪、电线等进行规整、房前屋后杂草杂物进行清理、设置公益广告，营造浓厚的宣传氛围，不断打造创建精品示范区。
       </p><p>二、坚持活动共办，优化服务载体，围绕党工委中心工作和妇女群众关心热点、难点、焦点问题，广泛发动区域内妇女群众，深入开展文明评选、关注“留守儿童关爱工程”等系列活动。组织“爱心妈妈”、“法律维权”、“心理咨询”“文明创建”等不同性质的巾帼志愿者服务队，广泛开展社会主义核心价值观内容宣传、文明创建、关爱弱势妇儿等活动，凝聚群众力量，倡导文明新风。      

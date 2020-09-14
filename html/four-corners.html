@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .plate-rank-content {
+            width: 500px;
+            height: 268px;
+            padding: 2px;
+            /* 边框发光效果 */
+            box-shadow: inset 0px 0px 30px 0px rgba(32, 116, 247, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            left: 500px;
+            top: 200px;
+        }
+
+        .angle-border {
+            /* 绝对定位让四个角的div不占空间 */
+            position: absolute;
+            width: 12px;
+            height: 12px;
+        }
+
+        .left-top-border {
+            top: 0;
+            left: 0;
+            border-left: 2px solid black;
+            border-top: 2px solid black;
+        }
+
+        .right-top-border {
+            top: 0;
+            right: 0;
+            border-right: 2px solid black;
+            border-top: 2px solid black;
+        }
+
+        .left-bottom-border {
+            bottom: 0;
+            left: 0;
+            border-bottom: 2px solid black;
+            border-left: 2px solid black;
+        }
+
+        .right-bottom-border {
+            bottom: 0;
+            right: 0;
+            border-right: 2px solid black;
+            border-bottom: 2px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="plate-rank-content">
+        <div class="angle-border left-top-border"></div>
+        <div class="angle-border right-top-border"></div>
+        <div class="angle-border left-bottom-border"></div>
+        <div class="angle-border right-bottom-border"></div>
+        srsthshjsjsj
+    </div>
+</body>
+
+</html>
