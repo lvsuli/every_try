@@ -40,9 +40,8 @@
     this.infoWindow = null
     //添加标注点
     let iconUrl = ''
-    if (this.type === "wife") iconUrl = "../imgs/wife.png"
-    else if (this.type === "base") iconUrl = "../imgs/factory.png"
-    else iconUrl = "../imgs/blueHouse.png"
+    if (this.type === "base") iconUrl = "../imgs/vegetables.png"
+    else iconUrl = "../imgs/home.png"
     let myIcon = new BMap.Icon(iconUrl, new BMap.Size(40, 40));
     myIcon.setImageSize(new BMap.Size(40, 40))
     this.marker = new BMap.Marker(new BMap.Point(this.lng, this.lat), { icon: myIcon });
